@@ -1,0 +1,268 @@
+/*
+
+
+import ConexionBD.ConexionBD;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.client.MongoCollection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.ModeloClients;
+import org.bson.Document;
+import view.Clients;
+
+*/
+
+/* class
+private DefaultTableModel dtm;
+    private Clients view;
+    private ModeloClients model;
+    private MongoCollection<Document> collection;
+    private ConexionBD conexionBD;
+    private DBCollection colec;
+
+*/
+
+
+/*
+public void ModificarCliente(){      
+        // Verificar si la cédula ya existe
+        Document filtroCedula = new Document("Cedula", model.cedula);
+        /*if (!conexionBD.buscarRegistro("RegistroUsuario", "Clientes", filtroCedula).isEmpty()) {
+            view.errDni.setText("**Cédula ya existente");
+            return;
+        }   */     
+        Document doc = new Document("Nombre", model.nomb)
+                       .append("Apellido", model.apell)
+                       .append("Direccion", model.dire)
+                       .append("Telefono", model.celular)
+                       .append("Edad", model.edad)
+                       .append("Genero", model.genero);
+        conexionBD.actualizarRegistro("RegistroUsuario", "Clientes", filtroCedula , doc);        
+        JOptionPane.showMessageDialog(null, "Cliente Modificado exitosamente.");                
+    }
+    //Limpia todos los datos de mi Tbla
+    private void LimpiarTab() {
+        DefaultTableModel modelo = (DefaultTableModel) view.tblDatos.getModel();
+        modelo.setRowCount(0); 
+    }
+    // Limpiar los mensajes de validacion
+    private void limpiarCampos() {
+        view.txtNombres.setText("");
+        view.txtApellidos.setText("");
+        view.txtCedula.setText("");
+        view.txtDireccion.setText("");
+        view.txtTelefono.setText("");
+        view.radioFeme.setSelected(false);
+        view.radioMascu.setSelected(false);
+    }   
+    //Buscar por cedula en mi BD
+    public void Buscar() {
+        String cedula = null;
+        boolean cedulaValida = false;
+        while (!cedulaValida) {
+            cedula = JOptionPane.showInputDialog(view, "Ingrese la cédula a buscar:");
+            if (cedula == null) {
+                return; 
+            } else if (cedula.isEmpty() || cedula.length() != 10) {
+                JOptionPane.showMessageDialog(view, "La cédula debe tener 10 dígitos.", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                cedulaValida = true;
+            }
+        }
+        LimpiarTab();
+        Document filtro = new Document("Cedula", cedula);
+        ArrayList<Document> resultados = conexionBD.buscarRegistro("RegistroUsuario", "Clientes", filtro);
+        DefaultTableModel modelo = (DefaultTableModel) view.tblDatos.getModel();
+        modelo.setRowCount(0);
+        if (resultados != null && !resultados.isEmpty()) {
+            for (Document doc : resultados) {
+                modelo.addRow(new Object[]{
+                        doc.getString("Nombre"),
+                        doc.getString("Apellido"),
+                        doc.getString("Cedula"),
+                        doc.getString("Direccion"),
+                        doc.getString("Telefono"),
+                        doc.getString("Edad"),
+                        doc.getString("Genero")
+                });
+            }
+        } else {
+            JOptionPane.showMessageDialog(view, "Usuario no existente.", "Búsqueda", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    //mostrar los datos de mi db en la tabla
+    public void leerDatos(){
+        collection = conexionBD.database.getCollection("Clientes");
+        List<Document> documentos = collection.find().into(new ArrayList<>());
+        String[] cabeceras = {"Nombre", "Apellido", "Cedula", "Direccion", "Telefono", "Edad", "Genero"};
+        dtm = new DefaultTableModel(cabeceras, 0);
+        view.tblDatos.setModel(dtm);
+        for (Document doc : documentos) {
+            Vector<Object> row = new Vector<>();
+            row.add(doc.get("Nombre"));
+            row.add(doc.get("Apellido"));
+            row.add(doc.get("Cedula"));
+            row.add(doc.get("Direccion"));
+            row.add(doc.get("Telefono"));
+            row.add(doc.get("Edad"));
+            row.add(doc.get("Genero"));
+            dtm.addRow(row);
+        }
+        view.tblDatos.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                DatosFilaSeleccionada();
+            }
+            
+        });
+    }
+    //ELIMINAR DATOS DE LA DB SELECCIONAN UNA FILA DE LA TABLA
+    public void Eliminar() {
+        int filaSeleccionada = view.tblDatos.getSelectedRow();
+        if (filaSeleccionada < 0) {
+            JOptionPane.showMessageDialog(view, "Debe seleccionar una fila para eliminar", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int opcion = JOptionPane.showConfirmDialog(view, "¿Está seguro de eliminar esta fila?", "Confirmación", JOptionPane.YES_NO_OPTION);
+        if (opcion == JOptionPane.YES_OPTION) {
+            String cedula = dtm.getValueAt(filaSeleccionada, 2).toString();
+            dtm.removeRow(filaSeleccionada);
+            // Eliminar de la base de datos
+            Document filtro = new Document("Cedula", cedula);
+            conexionBD.eliminarRegistro("RegistroUsuario", "Clientes", filtro);
+        }
+    }
+    //
+    public void modificar(){
+        int filaSeleccionada = view.tblDatos.getSelectedRow();
+        if (filaSeleccionada < 0) {
+            JOptionPane.showMessageDialog(view, "Debe seleccionar una fila para actualizar", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        boolean valida = validar();
+        if(valida){
+            ModificarCliente();
+        }                
+    }
+    //
+    private void DatosFilaSeleccionada() {
+        int filaSeleccionada = view.tblDatos.getSelectedRow();
+        if (filaSeleccionada < 0) {
+            // Obtener los datos de la fila seleccionada
+            //"Nombre"0, "Apellido"1, "Cedula"2, "Direccion"3, "Telefono"4, "Edad"5, "Genero"6
+            String Nombre = dtm.getValueAt(filaSeleccionada, 0).toString();
+            String Apellido = dtm.getValueAt(filaSeleccionada, 1).toString();
+            String Cedula = dtm.getValueAt(filaSeleccionada, 2).toString();
+            String Direccion = dtm.getValueAt(filaSeleccionada, 3).toString();
+            String Telefono = dtm.getValueAt(filaSeleccionada, 4).toString();
+            String Edad = dtm.getValueAt(filaSeleccionada, 5).toString();
+            String Genero = dtm.getValueAt(filaSeleccionada, 6).toString();
+            view.txtNombres.setText(Nombre);
+            view.txtApellidos.setText(Apellido);
+            view.txtCedula.setText(Cedula);
+            view.txtDireccion.setText(Direccion);
+            view.txtTelefono.setText(Telefono);
+            view.spinnerEdad.setValue(Edad);
+            if (Genero.equals("Masculino")) {
+                view.radioMascu.setSelected(true);
+            } else {
+                view.radioFeme.setSelected(true);
+            }
+            view.txtCedula.setEnabled(false); // Deshabilitar campo de cédula
+            limpiarCampos();
+        }
+    }
+
+
+*/
+
+
+
+
+/*
+public void guardarCliente(){      
+        // Verificar si la cédula ya existe
+        Document filtroCedula = new Document("Cedula", model.cedula);
+        if (!conexionBD.buscarRegistro("RegistroUsuario", "Clientes", filtroCedula).isEmpty()) {
+            view.errDni.setText("**Cédula ya existente");
+            return;
+        }
+        Document doc = new Document("Nombre", model.nomb)
+                       .append("Apellido", model.apell)
+                       .append("Direccion", model.dire)
+                       .append("Cedula", model.cedula)
+                       .append("Telefono", model.celular)
+                       .append("Edad", model.edad)
+                       .append("Genero", model.genero)
+                       .append("Tipo", model.tipo)
+                       .append("Horario", model.horario)
+                       .append("Pago", model.pago)
+                       .append("Suplementos", model.suple);
+        conexionBD.insertarRegistro("RegistroUsuario", "Clientes", doc);        
+        JOptionPane.showMessageDialog(null, "Cliebte registrado exitosamente.");        
+    }
+*/
+
+/*
+public class ConexionBD {
+    private MongoClient mongoClient;
+    private MongoDatabase database;
+      MongoCollection<Document> collection;
+
+    public ConexionBD() {
+        mongoClient = MongoClients.create("mongodb://localhost:27017");
+        database = mongoClient.getDatabase("LoginUsuario");  //Nombre de mi Base de Datos
+    }
+
+    public void insertarRegistro(String databaseName, String collectionName, Document documento) {
+        MongoCollection<Document> collection = database.getCollection(collectionName);
+        collection.insertOne(documento);
+    }
+
+    public void eliminarRegistro(String databaseName, String collectionName, Document filtro) {
+        MongoCollection<Document> collection = database.getCollection(collectionName);
+        collection.deleteOne(filtro);
+    }
+    
+    public void actualizarRegistro(String databaseName, String collectionName, Document filtro, Document actualizado) {
+        MongoCollection<Document> collection = database.getCollection(collectionName);
+        UpdateOptions options = new UpdateOptions().upsert(false);
+        collection.updateOne(filtro, new Document("$set", actualizado), options);
+}
+    
+    public ArrayList<Document> buscarRegistro(String databaseName, String collectionName, Document filtro) {
+        MongoCollection<Document> collection = database.getCollection(collectionName);
+        ArrayList<Document> resultados = new ArrayList<>();
+        for (Document doc : collection.find(filtro)) {
+            resultados.add(doc);
+        }
+        return resultados;
+    }
+    
+    public void mostrarMensajeConexionExitosa() {
+        JOptionPane.showMessageDialog(null, "Conexión exitosa a MongoDB");
+    }
+    //Leer desde BD
+    public ArrayList<Document> leerRegistros(String databaseName, String collectionName) {
+        MongoCollection<Document> collection = database.getCollection(collectionName);
+        ArrayList<Document> datos = new ArrayList<>();
+        for (Document doc : collection.find()) {
+            datos.add(doc);
+        }
+        return datos;
+    }
+}
+*/
+
+
+
+
+
