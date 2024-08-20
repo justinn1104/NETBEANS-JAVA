@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>4d</groupId>
-    <artifactId>P2Proyecto_G2</artifactId>
+    <artifactId>P3Proyecto_G2</artifactId>
     <version>1.48</version>
     <packaging>jar</packaging>
     <dependencies>
@@ -28,4 +28,5 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <exec.mainClass>d.p2proyecto_g2.P2Proyecto_G2</exec.mainClass>
     </properties>
+    <name>P3Proyecto_G2</name>
 </project>

@@ -54,6 +54,8 @@ public class Membres extends javax.swing.JInternalFrame {
         jLabel10 = new javax.swing.JLabel();
         comboPago = new javax.swing.JComboBox<>();
         errHorario = new javax.swing.JLabel();
+        errTipo = new javax.swing.JLabel();
+        errPago1 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -119,7 +121,7 @@ public class Membres extends javax.swing.JInternalFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "DATOS MEMBRESÍA", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(51, 51, 51))); // NOI18N
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Diaria", "Semanal", "Mensual", " " }));
+        comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar", "Diaria", "Semanal", "Mensual", " " }));
         jPanel2.add(comboTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, -1, -1));
 
         jLabel9.setText("Tipo:");
@@ -128,11 +130,9 @@ public class Membres extends javax.swing.JInternalFrame {
         jLabel8.setText("Horario:");
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 30, -1, -1));
 
-        buttonGroup1.add(radioMatu);
         radioMatu.setText("Matutino");
         jPanel2.add(radioMatu, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 30, -1, -1));
 
-        buttonGroup1.add(radioVespe);
         radioVespe.setText("Vespertino");
         jPanel2.add(radioVespe, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, -1, -1));
 
@@ -172,7 +172,7 @@ public class Membres extends javax.swing.JInternalFrame {
         SuplementosLayout.setVerticalGroup(
             SuplementosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SuplementosLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addContainerGap()
                 .addGroup(SuplementosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(check1)
                     .addComponent(check2)
@@ -182,19 +182,25 @@ public class Membres extends javax.swing.JInternalFrame {
                     .addComponent(check4)
                     .addComponent(check5)
                     .addComponent(check6))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
-        jPanel2.add(Suplementos, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 20, 350, 110));
+        jPanel2.add(Suplementos, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 20, 350, 100));
 
         jLabel10.setText("Forma de Pago:");
         jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
 
-        comboPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Efectivo", "Transferencia", "Card(Master, Visa, Diners)" }));
+        comboPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar", "Efectivo", "Transferencia", "Card(Master, Visa, Diners)" }));
         jPanel2.add(comboPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 120, -1));
 
         errHorario.setText("errHorario");
         jPanel2.add(errHorario, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, 120, 40));
+
+        errTipo.setText("errTipo");
+        jPanel2.add(errTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, 130, 20));
+
+        errPago1.setText("errPago");
+        jPanel2.add(errPago1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 110, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -205,7 +211,7 @@ public class Membres extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(52, Short.MAX_VALUE)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(btnLeer, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -213,9 +219,9 @@ public class Membres extends javax.swing.JInternalFrame {
                 .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
                 .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43))
+                .addGap(52, 52, 52))
             .addGroup(layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(jLabel1)
@@ -226,7 +232,7 @@ public class Membres extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 752, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,19 +243,18 @@ public class Membres extends javax.swing.JInternalFrame {
                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnLeer, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(21, 21, 21))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                    .addComponent(btnModificar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnLeer, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(19, 19, 19))
         );
 
         pack();
@@ -293,6 +298,8 @@ public class Membres extends javax.swing.JInternalFrame {
     public javax.swing.JComboBox<String> comboPago;
     public javax.swing.JComboBox<String> comboTipo;
     public javax.swing.JLabel errHorario;
+    public javax.swing.JLabel errPago1;
+    public javax.swing.JLabel errTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

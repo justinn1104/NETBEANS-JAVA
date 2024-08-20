@@ -29,7 +29,7 @@ public class ControladorClients implements ActionListener{
         this.model = model;
         this.view = view;
         this.collection = collection;
-        conexionBD = new ConexionBD();
+        this.conexionBD = ConexionBD.getInstance();
         this.view.errName.setText("");
         this.view.errLastName.setText("");
         this.view.errDireccion.setText("");
@@ -119,7 +119,8 @@ public class ControladorClients implements ActionListener{
                        .append("Telefono", model.celular)
                        .append("Edad", model.edad)
                        .append("Genero", model.genero);
-        conexionBD.actualizarRegistro("RegistroUsuario", "Clientes", filtroCedula , doc);        
+        conexionBD.setCollName("Clientes"); // Configurar colección correcta
+        conexionBD.actualizarRegistro(filtroCedula , doc);        
         JOptionPane.showMessageDialog(null, "Cliente Modificado exitosamente.");                
     }
     //Limpia todos los datos de mi Tbla
@@ -153,7 +154,8 @@ public class ControladorClients implements ActionListener{
         }
         LimpiarTab();
         Document filtro = new Document("Cedula", cedula);
-        ArrayList<Document> resultados = conexionBD.buscarRegistro("RegistroUsuario", "Clientes", filtro);
+        conexionBD.setCollName("Clientes"); // Configurar colección correcta
+        ArrayList<Document> resultados = conexionBD.buscarRegistro(filtro);
         DefaultTableModel modelo = (DefaultTableModel) view.tblDatos.getModel();
         modelo.setRowCount(0);
         if (resultados != null && !resultados.isEmpty()) {
@@ -211,7 +213,8 @@ public class ControladorClients implements ActionListener{
             dtm.removeRow(filaSeleccionada);
             // Eliminar de la base de datos
             Document filtro = new Document("Cedula", cedula);
-            conexionBD.eliminarRegistro("RegistroUsuario", "Clientes", filtro);
+            conexionBD.setCollName("Clientes"); // Configurar colección correcta
+            conexionBD.eliminarRegistro(filtro);
         }        
     }
     //
@@ -224,7 +227,8 @@ public class ControladorClients implements ActionListener{
         boolean valida = validar();
         if(valida){
             ModificarCliente();
-        }                
+        }
+        leerDatos();
     }
     //
     private void DatosFilaSeleccionada() {

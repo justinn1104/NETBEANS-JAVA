@@ -24,7 +24,7 @@ public class ControladorPrincipal implements ActionListener{
     public ControladorPrincipal(Principal view, ModeloPrincipal model) {
         this.view = view;
         this.model = model;
-        conexionBD = new ConexionBD();
+        this.conexionBD = ConexionBD.getInstance();
         this.view.menuCerrar.addActionListener(this);
         this.view.menuClients.addActionListener(this);
         this.view.menuMembres.addActionListener(this); 

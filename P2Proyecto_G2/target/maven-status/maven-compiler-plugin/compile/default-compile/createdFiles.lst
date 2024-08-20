@@ -2,12 +2,14 @@ view\Principal$5.class
 view\Membres.class
 view\Clients$2.class
 view\Principal.class
+Interface\FormaPago.class
 controller\ControladorRegistro.class
 view\Add_User$1.class
 controller\ControladorLogin.class
 model\ModeloMembres.class
 controller\ControladorPrincipal.class
 view\RegistrarUser.class
+d\p2proyecto_g2\Efectivo.class
 view\Membres$2.class
 view\Membres$3.class
 model\ModeloAdd_User.class
@@ -25,7 +27,9 @@ view\Principal$4.class
 model\ModeloClients.class
 view\Membres$4.class
 controller\ControladorClients$1.class
+d\p2proyecto_g2\Forma_Pago.class
 view\Clients$4.class
+d\p2proyecto_g2\transferencia.class
 model\ModeloLogin.class
 view\Clients.class
 view\Add_User$3.class

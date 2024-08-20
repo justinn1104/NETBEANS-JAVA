@@ -1,67 +1,102 @@
 package ConexionBD;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoClient;
 import com.mongodb.client.model.UpdateOptions;
-import com.mongodb.client.result.UpdateResult;
-import org.bson.Document;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import org.bson.Document;
 
-public class ConexionBD {
-    private MongoClient mongoClient;    
+public class ConexionBD {    
+    private MongoClient mongoClient;
     public MongoDatabase database;
-      MongoCollection<Document> collection;
+    private static ConexionBD instancia;
+    public MongoCollection<Document> collection;
+    private String dbName, collName;
+    private String dbMsg = "";
 
-    public ConexionBD() {
-        mongoClient = MongoClients.create("mongodb://localhost:27017");        
-        database = mongoClient.getDatabase("RegistroUsuario");  //Nombre de mi Base de Datos
+    public String getDbName() {
+        return dbName;
     }
-
-    public void insertarRegistro(String databaseName, String collectionName, Document documento) {
-        MongoCollection<Document> collection = database.getCollection(collectionName);
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
+    }
+    public String getCollName() {
+        return collName;
+    }
+    public void setCollName(String collName) {
+        this.collName = collName;
+    }
+    //PATRON SINGLE
+    public ConexionBD(MongoClient mongoClient) {
+        this.mongoClient = mongoClient;
+    }
+    //PATRON SINGLE
+    private ConexionBD() {
+        mongoClient = MongoClients.create("mongodb://localhost:27017");
+        database = mongoClient.getDatabase("P3Lab2_Instegram");
+    }
+    public String getDbMsg() {
+        return dbMsg;
+    }
+    //PATRON SINGLE
+    public static ConexionBD getInstance() {
+        if (instancia == null) {
+            instancia = new ConexionBD();
+        }
+        return instancia;
+    }
+    //PATRON SINGLE
+    public MongoDatabase getDatabase() {
+        return database;
+    }
+    //CREATE
+    public void insertarRegistro(Document documento) {
+        collection = getInstance().getDatabase().getCollection(collName);
+         if (collection.countDocuments() == 0) {
+            dbMsg = "Colección " + collName + " no existente, se ha creado.";
+        }
         collection.insertOne(documento);
     }
 
-    public void eliminarRegistro(String databaseName, String collectionName, Document filtro) {
-        MongoCollection<Document> collection = database.getCollection(collectionName);
-        collection.deleteOne(filtro);
-    }
-    
-    public void actualizarRegistro(String databaseName, String collectionName, Document filtro, Document actualizado) {
-        MongoCollection<Document> collection = database.getCollection(collectionName);
+    //UPDATE Actualizar desde BD
+    public void actualizarRegistro(Document filtro, Document actualizado) {
+        collection = getInstance().getDatabase().getCollection(collName);
         UpdateOptions options = new UpdateOptions().upsert(false);
         collection.updateOne(filtro, new Document("$set", actualizado), options);
-}
-    
-    public ArrayList<Document> buscarRegistro(String databaseName, String collectionName, Document filtro) {
-        MongoCollection<Document> collection = database.getCollection(collectionName);
-        ArrayList<Document> resultados = new ArrayList<>();
-        for (Document doc : collection.find(filtro)) {
-            resultados.add(doc);
-        }
-        return resultados;
     }
-    
-    public void mostrarMensajeConexionExitosa() {
-        JOptionPane.showMessageDialog(null, "Conexión exitosa a MongoDB");
+    //DELE
+
+    public void eliminarRegistro(Document filtro) {
+        collection = getInstance().getDatabase().getCollection(collName);
+        collection.deleteOne(filtro);
     }
-    //Leer desde BD
-    public ArrayList<Document> leerRegistros(String databaseName, String collectionName) {
-        MongoCollection<Document> collection = database.getCollection(collectionName);
+
+    //READER Leer desde BD
+    public ArrayList<Document> leerRegistro() {
+        collection = getInstance().getDatabase().getCollection(collName);
         ArrayList<Document> datos = new ArrayList<>();
         for (Document doc : collection.find()) {
             datos.add(doc);
         }
         return datos;
+    }
+    
+       public boolean existenRegistros (String isbn) {
+        collection = getInstance().getDatabase().getCollection(collName);
+        Document filtro = new Document("ISBN", isbn);
+        Document resultado = collection.find(filtro).first();
+        return resultado != null;
+    }
+    //Buscar desde la BD
+    public ArrayList<Document> buscarRegistro(Document filtro) {
+        collection = getInstance().getDatabase().getCollection(collName);
+        ArrayList<Document> resultados = new ArrayList<>();
+        for (Document doc : collection.find(filtro)) {
+            resultados.add(doc);
+        }
+        return resultados;
     }
     
 }

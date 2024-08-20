@@ -67,6 +67,8 @@ public class Add_User extends javax.swing.JInternalFrame {
         jLabel10 = new javax.swing.JLabel();
         comboPago = new javax.swing.JComboBox<>();
         errHorario = new javax.swing.JLabel();
+        errTipo = new javax.swing.JLabel();
+        errPago1 = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
 
@@ -165,7 +167,7 @@ public class Add_User extends javax.swing.JInternalFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "DATOS MEMBRESÍA", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(51, 51, 51))); // NOI18N
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Diaria", "Semanal", "Mensual", " " }));
+        comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar", "Diaria", "Semanal", "Mensual", " " }));
         jPanel2.add(comboTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, -1, -1));
 
         jLabel9.setText("Tipo:");
@@ -236,11 +238,17 @@ public class Add_User extends javax.swing.JInternalFrame {
         jLabel10.setText("Forma de Pago:");
         jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
 
-        comboPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Efectivo", "Transferencia", "Card(Master, Visa, Diners)" }));
+        comboPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar", "Efectivo", "Transferencia", "Card" }));
         jPanel2.add(comboPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 120, -1));
 
         errHorario.setText("errHorario");
         jPanel2.add(errHorario, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, 120, 40));
+
+        errTipo.setText("errTipo");
+        jPanel2.add(errTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, 130, 20));
+
+        errPago1.setText("errPago");
+        jPanel2.add(errPago1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 110, -1));
 
         btnCancelar.setText("CANCELAR");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -318,7 +326,9 @@ public class Add_User extends javax.swing.JInternalFrame {
     public javax.swing.JLabel errHorario;
     public javax.swing.JLabel errLastName;
     public javax.swing.JLabel errName;
+    public javax.swing.JLabel errPago1;
     public javax.swing.JLabel errTelefono;
+    public javax.swing.JLabel errTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel17;

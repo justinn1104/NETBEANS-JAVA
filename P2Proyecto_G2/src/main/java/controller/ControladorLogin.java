@@ -18,14 +18,15 @@ public class ControladorLogin implements ActionListener {
     ModeloLogin model;
     private boolean isPasswordVisible = false;
     private ConexionBD conexionBD;
+    
 
     public ControladorLogin(Login view, ModeloLogin model) {
         this.view = view;
         this.model = model;
         this.view.btnEntrar.addActionListener(this);
         this.view.btnCrear.addActionListener(this);
-        
-        conexionBD = new ConexionBD();
+        this.conexionBD = ConexionBD.getInstance();
+        conexionBD.setCollName("Credenciales"); // Configurar colección correcta
     }
 
     public void guardar() {
@@ -48,7 +49,7 @@ public class ControladorLogin implements ActionListener {
         }
 
         if (campo) {
-            MongoCollection<Document> collection = conexionBD.database.getCollection("Usuarios");
+            MongoCollection<Document> collection = conexionBD.database.getCollection("Credenciales");
             Document filtro = new Document("usuario", usuario).append("contrasena", contra);
             Document usuarioDoc = collection.find(filtro).first();
             

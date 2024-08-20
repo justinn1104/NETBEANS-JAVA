@@ -24,8 +24,8 @@ public class ControladorRegistro implements ActionListener {
         this.view = view;
         this.model = model;
         this.collection = collection1;
-        conexionBD = new ConexionBD();
-
+        this.conexionBD = ConexionBD.getInstance();
+        conexionBD.setCollName("Credenciales"); // Configurar colección correcta
         this.view.btnRegresar.addActionListener(this);
         this.view.btnRegistrar.addActionListener(this);
     }
@@ -72,17 +72,16 @@ public class ControladorRegistro implements ActionListener {
         if (campoVa) {
             // Verificar si la cédula ya existe
             Document filtroCedula = new Document("cedula", cedula);
-            if (!conexionBD.buscarRegistro("RegistroUsuario", "Usuarios", filtroCedula).isEmpty()) {
+            if (!conexionBD.buscarRegistro(filtroCedula).isEmpty()) {
                 view.txtVaCedula.setText("**Cédula ya existente");
                 return;
             }
-
             String usuario = nombre.substring(0, 3) + cedula.substring(0, 3);
             String contrasena = apellido + (int)(Math.random() * 100);
             Document doc = new Document("usuario", usuario)
                            .append("contrasena", contrasena)
                            .append("cedula", cedula);
-            conexionBD.insertarRegistro("RegistroUsuario", "Usuarios", doc);
+            conexionBD.insertarRegistro(doc);
             JOptionPane.showMessageDialog(null, "Usuario registrado exitosamente.\n"
                                               + "Usuario: " + usuario + "\n"
                                               + "Contraseña: " + contrasena);
